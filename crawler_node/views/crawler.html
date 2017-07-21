@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css">
+
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+		
+
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.3.0/jquery.autocomplete.js"></script>
+
+		<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
+		<style>
+		.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+		.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+		.autocomplete-selected { background: #F0F0F0; }
+		.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+		.autocomplete-group { padding: 2px 5px; }
+		.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+		.avatar {
+					/* cambia estos dos valores para definir el tamaño de tu círculo */  
+		    width:120px;
+		    height:120px;
+		    border-radius:100%;
+		    border:3px solid white;
+		    
+		    
+		}
+
+		.avatar2 {
+					/* cambia estos dos valores para definir el tamaño de tu círculo */  
+		    width: 70px;
+		    height:70px;
+		    border-radius:100%;
+		    border:3px solid white;
+		    
+		    
+		}
+		
+
+		.political-thumbnail{
+			background: rgba(255,255,255,0); 
+			border-radius:0px; 
+			
+		    border: 20px solid rgba(0, 0, 0, 0);
+		    margin: 8px;
+		    flex-direction: column;
+
+		    -webkit-box-shadow: 0 8px 6px -6px #999 !important;
+            -moz-box-shadow: 0 8px 6px -6px #999 !important;
+			box-shadow: 0 4px 8px 0px #999 !important;
+
+
+		}
+
+		.btn-thumbnail{
+
+			display: block;
+			border-radius: 100%;
+			background-color: #222;
+			height: 40px;
+			width: 40px;
+			border: rgba(0, 0, 0, 1);
+			font-size: 20px;
+			text-align:  center;
+			cursor: pointer;
+		    color: #fff;
+		    outline: 0;
+		    -webkit-transition: all .3s;
+		    -moz-transition: all .3s;
+		    transition: all .3s; 
+
+			}
+		.btn-thumbnail:hover { 
+    		background-color: #148f76;
+    		color: white;
+    	}
+    	.political-thumbnail:hover{
+
+    		background-color: rgba(62,75,88, 0.7); 
+
+    		background-color: rgba(19,44,56, 0.4); 		
+
+    		background-color: rgba(19,44,56, 0.7); 
+
+			
+    	}
+    	.margin-top-panel{
+    		margin-top: 20px
+    	}
+
+    	.no-border{
+    		border-radius: 0px;
+    	}
+    	.panel-header{
+    		margin-top: 0px;
+    		margin-bottom: 0px;
+    		margin-right: 0px;
+    		margin-left: 0px;
+    	}
+    	.nav-shadow{
+		    -webkit-box-shadow: 0 8px 6px -6px #999 !important;
+            -moz-box-shadow: 0 8px 6px -6px #999 !important;
+			box-shadow: 0 4px 8px 0px #999 !important;
+			background-image: url('/images/sayata.png');
+		}
+		
+		.grid-item{
+			width: 360px
+		}
+
+		.btn-site{
+			background-color: #1ab394;
+			border-color: #1ab394;
+			color: #FFFFFF;
+
+		}
+
+		.btn-site:hover{
+			background-color: #148f76;
+			border-color: #148f76;
+			color: #FFFFFF;
+		}
+
+		.btn-site-info{
+			
+			background-color: #969292;
+			border-color: #969292;
+			color: #FFFFFF;		 
+		}
+
+		.btn-site-info:hover{
+			
+			background-color: #a7b1c2;
+			border-color: #a7b1c2;
+			color: #FFFFFF;		 
+		}
+
+
+
+		.footer-bottom {
+		    background-color: #e7eaec;
+		    min-height: 30px;
+		    width: 100%;
+		}
+		.copyright {
+		    color: #676a6c;
+		    line-height: 30px;
+		    min-height: 30px;
+		    padding: 7px 0;
+		}
+		.design {
+		    color: #676a6c;
+		    line-height: 30px;
+		    min-height: 30px;
+		    padding: 7px 0;
+		    text-align: right;
+		}
+		.design a {
+		    color: #676a6c;
+		}
+
+		.pagination a {
+		    color: black;
+		    float: left;
+		    padding: 8px 16px;
+		    text-decoration: none;
+
+		}
+	    
+
+	    .pagination a.active {
+		    background-color: #1ab394;
+		    color: white;
+		}
+
+		.pagination a:hover:not(.active) {background-color: rgba(62,75,88, 0.7);}
+
+		.rv{
+			    height: 150px;
+    			background-size: cover;
+    			background-image: url('http://visitas.presidencia.gov.co/web/fts/casa-narino-1-fachada.jpg') ;
+
+    			
+    			padding-top: 0.25rem;
+    			  
+ 
+			}
+
+		.rp{
+			-webkit-box-flex: 40;
+			flex: 1 1 auto;
+    		padding: 0.25rem;
+			    
+		}
+		
+
+	</style>
+
+		<h1> Hola soy un crawler </h1>
+
+	</head>
+	<script>
+		var links = []
+		var links_to_search=[]
+		var info_recolectada=[]
+		function buscarPersonaje(data){
+				     		
+    	
+		}
+		function getPersonaje(links_to_search,cont ){
+
+			if(cont<links_to_search.length){
+
+			
+
+			$.get( "/search/personal_info", { search: links_to_search[cont] } )
+				.done(function( data ) {	
+					links.push(links_to_search[cont])
+
+
+					var personaje = JSON.parse(data)
+					info_recolectada.push(personaje)
+					
+					var imagen = personaje.Imagen == 'no disponible'? '/images/hombre.png':personaje.Imagen
+
+					row='<tr>'+'<td><h4><img class="avatar2" style="object-fit: cover" src="'+imagen+'" height = "70px" width="70px"> <a style="cursor:pointer" href="'+personaje.Url+'"><span class="label label-default">'+personaje.Nombre+'</span><a/></h4>'
+					if (personaje.Familia){
+					row=row+'<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-share-alt" aria-hidden="true"></i> Familia Relacionada</strong></h4></li>'
+					for(property in personaje.Familia){
+
+	    				personaje.Familia[property].forEach(function(enlace){
+	    						
+	    					if (enlace.title != null){
+
+	    						if (enlace.url != null ){
+
+	    							
+		    						row=row+'<li class="list-group-item"><h5><strong><span class="label" style="background-color: #1ab394">' + property+'</span> <a href = "'+ enlace.url+'">'+enlace.title+'</a></strong></h5></li>'
+		    						if (links.indexOf(enlace.url) == -1){
+
+		    							if (links_to_search.indexOf(enlace.url) == -1){
+		    								links_to_search.push(enlace.url) 
+		    							}
+    								}
+	    						}else{
+
+	    							row=row+'<li class="list-group-item"><h5><strong><span class="label" style="background-color: #1ab394">'+property+'</span> '+ enlace.title+'</strong></h5></li>'
+	    								
+	    						}
+
+	    					}
+
+
+    					})
+
+	    				
+
+
+	    			}
+	    			
+	    			row +='</div>'
+					}
+	    			if (personaje.laboral && personaje.laboral.length != 0){
+	    			row += '<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-university" aria-hidden="true"></i> Entidades relacionadas</strong></h4></li>'
+	    			
+		    			personaje.laboral.forEach(function(entidad){
+		    				
+		    					
+	    					if (entidad.title){
+
+	    						if (entidad.url){
+	    							row +='<li class="list-group-item"><h5><strong> <a href = "'+ entidad.url+'">'+entidad.title+'</a></strong></h5></li>'
+	    						
+	    						}else{
+	    							row += '<li class="list-group-item"><h5><strong>'+entidad.title+'</strong></h5></li>'
+	    						}
+	    					}/*else{
+	    						row=row+'<li class="list-group-item"><h5><strong> <a href = "'+ entidad.url+'">'+entidad.url+'</a></strong></h5></li>'
+	    					}*/
+	    					
+	    				})
+	    				row +='</div>'
+	    			}
+	    				if (personaje['Información personal'] && personaje['Información personal']['Nacimiento']){
+
+	    			row += '<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-university" aria-hidden="true"></i> Lugar de nacimiento </strong></h4></li>'
+	    			
+					var nacimiento_info = personaje['Información personal']['Nacimiento']
+					row +='<li class="list-group-item"><h5><strong> <span class="label" style="background-color: #1ab394">'+'Ciudad'+'</span> '+ '<a href = "'+ nacimiento_info[nacimiento_info.length-2].url+'">'+nacimiento_info[nacimiento_info.length-2].title+'</a></strong></h5></li>'
+					row +='<li class="list-group-item"><h5><strong>  <span class="label" style="background-color: #1ab394">'+'País'+'</span> <a href = "'+ nacimiento_info[nacimiento_info.length-1].url+'">'+nacimiento_info[nacimiento_info.length-1].title+'</a></strong></h5></li>'
+					}else{
+						console.log(personaje)
+					}
+	    			 
+
+	    			$("#table_body").append(row+'</td></tr>')
+	    			
+	    			getPersonaje(links_to_search, cont+1)
+	    		
+			})
+
+			}else{
+
+				$("#div_descargar").show()
+				$("#div_personas").css('margin-top','0px')
+				$("#spin").removeClass('fa-circle-o-notch')
+				$("#spin").removeClass('fa-spin')
+				$("#spin").addClass('fa-download')
+				$("#descargar_button").prop('disabled', false)
+			}
+		}
+		function descargar_archivo(){
+			
+			var elem = document.getElementById('descargar');
+
+			elem.download = "<%= political %>.json";
+			elem.href = "data:application/octet-stream," 
+			                     + encodeURIComponent(JSON.stringify(info_recolectada));
+
+			elem.click()
+		}
+
+	
+		$(document).ready(function() {
+			$("#table_body").empty();
+			links_to_search.push("<%= political %>")
+			getPersonaje(links_to_search,0)
+		})
+			
+		
+	</script>
+	
+	<body style="">
+
+			<nav class="navbar navbar-default navbar-fixed-top no-border nav-shadow">
+			  	<div class="container-fluid">
+			    	<div class="navbar-header" style="margin-top: 30px; margin-bottom: 30px">
+				    	
+					  		
+					  	
+				      	<div class="col-md-12">
+
+							<form id="loginformA" action="/search/person:political" method="get">
+							    <div class="input-group" >
+							    	<input type="text" name="search" id="autocomplete" class="form-control" placeholder="Buscar..." value="<%= political %>" style="border-radius:0px"/>
+							      
+							    	
+
+							      <span class="input-group-btn">
+							        <button class="btn btn-site no-border" id="search_submit" type="submit"><i class="glyphicon glyphicon-search"></i> Buscar</button>
+							      </span>
+							    </div>
+						    </form>
+						</div>
+			        
+			    	</div>
+			  	</div>
+			</nav>
+
+			<div class="container">
+				<div class="col-md-12" id="div_descargar" style="margin-top: 50px; margin-bottom: 30px;">
+					<div class="pull-right"> &nbsp;</div> <button class="btn btn-site no-border pull-right" id="descargar_button" disabled onclick="descargar_archivo()" type="button"> <i id="spin" class="fa fa-circle-o-notch fa-spin fa-lg" aria-hidden="true"></i> Descargar</button>
+
+					<a download="" href="" id="descargar"></a>
+				</div>
+			</div>
+			
+			
+			<div class="container">
+				
+
+				<div class="panel panel-default no-border" id="div_personas" style ="" >
+					<div class="panel-heading"><h4><strong><i class="fa fa-users fa-lg" aria-hidden="true"></i> Personas</strong></h4> </div>
+					<div class="panel-body" align="center">
+				   	
+
+						<table class="table table-hover" style="width: 80%">
+							<tbody id="table_body">
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="footer-bottom">
+
+				<div class="container">
+
+					<div class="row">
+
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+							<div class="copyright">
+
+								© 2016-2017, "Nombre de la Aplicación"
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+							<div class="design">
+
+								 <a target="_blank" href="http://comunidad.udistrital.edu.co/gesdatos/">Grupo de Investigación Gesdatos </a> |  <a target="_blank" href="https://www.udistrital.edu.co/">Universidad Distrital Francisco José de Caldas</a>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+	<div class="modal fade" id="loading_div" data-backdrop="static" data-keyboard="false">
+
+		 <div class="modal-dialog">
+
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		    	
+		      	<div class="modal-body" align="center">
+		      		<h3><i class="fa fa-paper-plane" aria-hidden="true"></i> Estamos recolectando información...</h3>
+		        	<img src="/images/loading.gif" />
+		      	</div>
+		      
+		    </div>
+
+		  </div>
+
+	</div>
+			
+		
+		
+
+	</body>
+
+</html>
+
