@@ -51,6 +51,6 @@ $ cd Politicos/politico_node/
 ```
 Iniciar el servidor:
 ```sh 
-node server.js
+$ node server.js
 ```
 
