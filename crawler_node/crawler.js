@@ -10,14 +10,9 @@ app.set('views', __dirname + '/views'); //Renderizar vistas
 app.engine('html', require('ejs').renderFile); // Para procesar todo el HTML 
 app.use(express.static('static')); //Donde voy a guardar archivos estaticos (java script y sus librerias)
 
-
 app.get('/', function(request, response){ //Start the main page 
-    context = {}
-    context['political'] = ''
-
-	response.render('crawler.html',context);
-	//iniciar("https://es.wikipedia.org/wiki/Juan_Manuel_Santos")
-}).listen(properties.crawler.port)  //Mientras :3
+	response.render('crawler.html',{'political':''});
+}).listen(properties.crawler.port) 
 
 app.get('/search/personal_info', function(request, response){
     socket.emit('search politician', request.query.search)
@@ -33,21 +28,15 @@ app.get('/search/personal_info', function(request, response){
 })
 
 app.get('/search/person:*', function(request, response){
-
     var political=request.query.search
-    console.log(request.query.search)
     context={}
-
-    context['political']=political
-
-    
+    context['political']=political    
     response.render('crawler.html',context)
 
 });
 
 
-function iniciar(inicio){ 
+/*function iniciar(inicio){ 
     var a = {}
     getInfo(inicio, function(info){ a = info})
-    console.log(a)
-}
+}*/

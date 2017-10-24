@@ -19,8 +19,101 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.3.0/jquery.autocomplete.js"></script>
 
 		<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+		<h1> Hola soy un crawler </h1>
+		<link rel="stylesheet" type="text/css" href="styles/styles.css">
+	</head>
+	<script>
+		var links = []
+		var links_to_search=[]
+		var info_recolectada=[]
+		
+		function getPersonaje(links_to_search,cont ){
+			if(cont<links_to_search.length){
+			$.get( "/search/personal_info", { search: links_to_search[cont] } )
+				.done(function( data ) {	
+					links.push(links_to_search[cont])
+					var personaje = JSON.parse(data)
+					info_recolectada.push(personaje)					
+					var imagen = personaje.Imagen == 'no disponible'? '/images/hombre.png':personaje.Imagen
+					row='<tr>'+'<td><h4><img class="avatar2" style="object-fit: cover" src="'+imagen+'" height = "70px" width="70px"> <a style="cursor:pointer" href="'+personaje.Url+'"><span class="label label-default">'+personaje.Nombre+'</span><a/></h4>'
+					if (personaje.Familia){
+					row=row+'<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-share-alt" aria-hidden="true"></i> Familia Relacionada</strong></h4></li>'
+					for(property in personaje.Familia){
+	    				personaje.Familia[property].forEach(function(enlace){	    					
+	    					if (enlace.title != null){
+	    						if (enlace.url != null ){	    							
+		    						row=row+'<li class="list-group-item"><h5><strong><span class="label" style="background-color: #1ab394">' + property+'</span> <a href = "'+ enlace.url+'">'+enlace.title+'</a></strong></h5></li>'
+		    						if (links.indexOf(enlace.url) == -1){
 
-		<style>
+		    							if (links_to_search.indexOf(enlace.url) == -1){
+		    								links_to_search.push(enlace.url) 
+		    							}
+    								}
+	    						}else{
+	    							row=row+'<li class="list-group-item"><h5><strong><span class="label" style="background-color: #1ab394">'+property+'</span> '+ enlace.title+'</strong></h5></li>'	    								
+	    						}
+	    					}
+    					})		
+	    			}	    			
+	    			row +='</div>'
+					}
+	    			if (personaje.laboral && personaje.laboral.length != 0){
+	    			row += '<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-university" aria-hidden="true"></i> Entidades relacionadas</strong></h4></li>'
+	    			
+		    			personaje.laboral.forEach(function(entidad){
+		    				
+		    					
+	    					if (entidad.title){
+
+	    						if (entidad.url){
+	    							row +='<li class="list-group-item"><h5><strong> <a href = "'+ entidad.url+'">'+entidad.title+'</a></strong></h5></li>'
+	    						
+	    						}else{
+	    							row += '<li class="list-group-item"><h5><strong>'+entidad.title+'</strong></h5></li>'
+	    						}
+	    					}/*else{
+	    						row=row+'<li class="list-group-item"><h5><strong> <a href = "'+ entidad.url+'">'+entidad.url+'</a></strong></h5></li>'
+	    					}*/
+	    					
+	    				})
+	    				row +='</div>'
+	    			}
+	    				if (personaje['Información personal'] && personaje['Información personal']['Nacimiento']){
+
+	    			}  			 
+
+	    			$("#table_body").append(row+'</td></tr>')
+	    			
+	    			getPersonaje(links_to_search, cont+1)
+	    		
+			})
+
+			}else{
+
+				$("#div_descargar").show()
+				$("#div_personas").css('margin-top','0px')
+				$("#spin").removeClass('fa-circle-o-notch')
+				$("#spin").removeClass('fa-spin')
+				$("#spin").addClass('fa-download')
+				$("#descargar_button").prop('disabled', false)
+			}
+		}
+		function descargar_archivo(){
+			
+			var elem = document.getElementById('descargar');
+
+			elem.download = "<%= political %>.json";
+			elem.href = "data:application/octet-stream,"+ encodeURIComponent(JSON.stringify(info_recolectada));
+			elem.click()
+		}
+
+	
+		$(document).ready(function() {
+			$("#table_body").empty();
+			links_to_search.push("<%= political %>")
+			getPersonaje(links_to_search,0)
+		})</script>
+	<style>
 		.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
 		.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
 		.autocomplete-selected { background: #F0F0F0; }
@@ -205,151 +298,12 @@
 			    
 		}
 		
-
 	</style>
-
-		<h1> Hola soy un crawler </h1>
-
-	</head>
-	<script>
-		var links = []
-		var links_to_search=[]
-		var info_recolectada=[]
-		function buscarPersonaje(data){
-				     		
-    	
-		}
-		function getPersonaje(links_to_search,cont ){
-
-			if(cont<links_to_search.length){
-
-			
-
-			$.get( "/search/personal_info", { search: links_to_search[cont] } )
-				.done(function( data ) {	
-					links.push(links_to_search[cont])
-
-
-					var personaje = JSON.parse(data)
-					info_recolectada.push(personaje)
-					
-					var imagen = personaje.Imagen == 'no disponible'? '/images/hombre.png':personaje.Imagen
-
-					row='<tr>'+'<td><h4><img class="avatar2" style="object-fit: cover" src="'+imagen+'" height = "70px" width="70px"> <a style="cursor:pointer" href="'+personaje.Url+'"><span class="label label-default">'+personaje.Nombre+'</span><a/></h4>'
-					if (personaje.Familia){
-					row=row+'<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-share-alt" aria-hidden="true"></i> Familia Relacionada</strong></h4></li>'
-					for(property in personaje.Familia){
-
-	    				personaje.Familia[property].forEach(function(enlace){
-	    						
-	    					if (enlace.title != null){
-
-	    						if (enlace.url != null ){
-
-	    							
-		    						row=row+'<li class="list-group-item"><h5><strong><span class="label" style="background-color: #1ab394">' + property+'</span> <a href = "'+ enlace.url+'">'+enlace.title+'</a></strong></h5></li>'
-		    						if (links.indexOf(enlace.url) == -1){
-
-		    							if (links_to_search.indexOf(enlace.url) == -1){
-		    								links_to_search.push(enlace.url) 
-		    							}
-    								}
-	    						}else{
-
-	    							row=row+'<li class="list-group-item"><h5><strong><span class="label" style="background-color: #1ab394">'+property+'</span> '+ enlace.title+'</strong></h5></li>'
-	    								
-	    						}
-
-	    					}
-
-
-    					})
-
-	    				
-
-
-	    			}
-	    			
-	    			row +='</div>'
-					}
-	    			if (personaje.laboral && personaje.laboral.length != 0){
-	    			row += '<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-university" aria-hidden="true"></i> Entidades relacionadas</strong></h4></li>'
-	    			
-		    			personaje.laboral.forEach(function(entidad){
-		    				
-		    					
-	    					if (entidad.title){
-
-	    						if (entidad.url){
-	    							row +='<li class="list-group-item"><h5><strong> <a href = "'+ entidad.url+'">'+entidad.title+'</a></strong></h5></li>'
-	    						
-	    						}else{
-	    							row += '<li class="list-group-item"><h5><strong>'+entidad.title+'</strong></h5></li>'
-	    						}
-	    					}/*else{
-	    						row=row+'<li class="list-group-item"><h5><strong> <a href = "'+ entidad.url+'">'+entidad.url+'</a></strong></h5></li>'
-	    					}*/
-	    					
-	    				})
-	    				row +='</div>'
-	    			}
-	    				if (personaje['Información personal'] && personaje['Información personal']['Nacimiento']){
-
-	    			/*row += '<div class="list-group" style="width: 100%"> <li class="list-group-item default"><h4><strong><i class="fa fa-university" aria-hidden="true"></i> Lugar de nacimiento </strong></h4></li>'
-	    			
-					var nacimiento_info = personaje['Información personal']['Nacimiento']
-					row +='<li class="list-group-item"><h5><strong> <span class="label" style="background-color: #1ab394">'+'Ciudad'+'</span> '+ '<a href = "'+ nacimiento_info[nacimiento_info.length-2].url+'">'+nacimiento_info[nacimiento_info.length-2].title+'</a></strong></h5></li>'
-					row +='<li class="list-group-item"><h5><strong>  <span class="label" style="background-color: #1ab394">'+'País'+'</span> <a href = "'+ nacimiento_info[nacimiento_info.length-1].url+'">'+nacimiento_info[nacimiento_info.length-1].title+'</a></strong></h5></li>'*/
-					}else{
-						console.log(personaje)
-					}
-	    			 
-
-	    			$("#table_body").append(row+'</td></tr>')
-	    			
-	    			getPersonaje(links_to_search, cont+1)
-	    		
-			})
-
-			}else{
-
-				$("#div_descargar").show()
-				$("#div_personas").css('margin-top','0px')
-				$("#spin").removeClass('fa-circle-o-notch')
-				$("#spin").removeClass('fa-spin')
-				$("#spin").addClass('fa-download')
-				$("#descargar_button").prop('disabled', false)
-			}
-		}
-		function descargar_archivo(){
-			
-			var elem = document.getElementById('descargar');
-
-			elem.download = "<%= political %>.json";
-			elem.href = "data:application/octet-stream," 
-			                     + encodeURIComponent(JSON.stringify(info_recolectada));
-
-			elem.click()
-		}
-
-	
-		$(document).ready(function() {
-			$("#table_body").empty();
-			links_to_search.push("<%= political %>")
-			getPersonaje(links_to_search,0)
-		})
-			
-		
-	</script>
-	
-	<body style="">
+	<body >
 
 			<nav class="navbar navbar-default navbar-fixed-top no-border nav-shadow">
 			  	<div class="container-fluid">
-			    	<div class="navbar-header" style="margin-top: 30px; margin-bottom: 30px">
-				    	
-					  		
-					  	
+			    	<div class="navbar-header" style="margin-top: 30px; margin-bottom: 30px">	 	
 				      	<div class="col-md-12">
 
 							<form id="loginformA" action="/search/person:political" method="get">
@@ -368,6 +322,7 @@
 			    	</div>
 			  	</div>
 			</nav>
+
 
 			<div class="container">
 				<div class="col-md-12" id="div_descargar" style="margin-top: 50px; margin-bottom: 30px;">
@@ -396,6 +351,7 @@
 			</div>
 
 			<div class="footer-bottom">
+				
 
 				<div class="container">
 
@@ -411,11 +367,12 @@
 						</div>
 
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+							<div align="right">
 
-							<div class="design">
+							<!--div class="design"-->
+							<a href="http://comunidad.udistrital.edu.co/gesdatos/" target="_blank"><img src="/images/Logo.png" style="max-width: 100px; max-height: 100px"></a>
 
-								 <a target="_blank" href="http://comunidad.udistrital.edu.co/gesdatos/">Grupo de Investigación Gesdatos </a> |  <a target="_blank" href="https://www.udistrital.edu.co/">Universidad Distrital "Francisco José de Caldas" Bogotá, Colombia</a>
-
+							<a href="http://comunidad.udistrital.edu.co/" target="_blank"><img src="/images/Logo_UD.png" style="max-width: 100px; max-height: 100px"></a>
 							</div>
 
 						</div>
